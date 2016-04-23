@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Firebase from 'firebase';
 import ReactFireMixin from 'reactfire'
+var BarChart = require("react-chartjs").Bar;
 
 var App = React.createClass({
   mixins: [ReactFireMixin],
@@ -58,6 +59,8 @@ var App = React.createClass({
           <input type="submit" name="submit" id="submit"/>
         </form>
 
+        <RateBarChart freelancers={this.state.freelancers}/>
+
       </div>
     )
   }
@@ -73,7 +76,7 @@ var DataTable = React.createClass({
           monthly={freelancer.monthly}/>
       )
     });
-    console.log(freelancers);
+
     return (
       <div>
         <h2>DataTable</h2>
@@ -90,5 +93,38 @@ var DataRow = React.createClass({
     )
   }
 })
+
+var RateBarChart = React.createClass({
+
+  render: function() {
+    var chartData = {
+      labels: ["0 - 19", "20 - 39", "40 - 59", "60 - 79", "80 - 99", "100 - 119", "120 - 140"],
+      datasets: [
+        {
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          data: [0, 0, 0, 0]
+        }
+      ]
+    }
+    var chartOptions = {
+      scaleShowHorizontalLines: false,
+      scaleShowVerticalLines: false,
+      responsive: true
+    };
+
+    this.props.freelancers.forEach(function(freelancer, index) {
+      var rateGroup = Math.floor(freelancer.rate / 20);
+      chartData.datasets[0].data[rateGroup]++
+    });
+
+
+    return <BarChart data={chartData} options={chartOptions} width="700" height="250"/>
+  }
+});
 
 ReactDOM.render(<App/>, document.getElementById('app'));

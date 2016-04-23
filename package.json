@@ -10,8 +10,10 @@
   "author": "",
   "dependencies": {
     "babel-preset-react": "^6.5.0",
+    "chart.js": "^1.1.1",
     "firebase": "^2.4.2",
     "react": "^0.14.7",
+    "react-chartjs": "^0.7.3",
     "react-dom": "^0.14.7",
     "reactfire": "^0.7.0"
   },
