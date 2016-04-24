@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Firebase from 'firebase';
-import ReactFireMixin from 'reactfire'
+import ReactFireMixin from 'reactfire';
+import Chart from 'chart.js';
 var BarChart = require("react-chartjs").Bar;
 
 var App = React.createClass({
@@ -60,6 +61,7 @@ var App = React.createClass({
         </form>
 
         <RateBarChart freelancers={this.state.freelancers}/>
+        <MonthlyBarChart freelancers={this.state.freelancers}/>
 
       </div>
     )
@@ -95,10 +97,10 @@ var DataRow = React.createClass({
 })
 
 var RateBarChart = React.createClass({
-
   render: function() {
+
     var chartData = {
-      labels: ["0 - 19", "20 - 39", "40 - 59", "60 - 79", "80 - 99", "100 - 119", "120 - 140"],
+      labels: ["0 - 19", "20 - 39", "40 - 59", "60 - 79", "80 - 99", "100 - 119", "120 - 139", "140 - 160"],
       datasets: [
         {
           fillColor: "rgba(151,187,205,0.2)",
@@ -107,14 +109,16 @@ var RateBarChart = React.createClass({
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
-          data: [0, 0, 0, 0]
+          data: [0, 0, 0, 0, 0, 0, 0, 0]
         }
       ]
-    }
+    };
+
     var chartOptions = {
-      scaleShowHorizontalLines: false,
-      scaleShowVerticalLines: false,
-      responsive: true
+      scaleShowGridLines: false,
+      responsive: true,
+      barValueSpacing : 10,
+      showTooltips: false
     };
 
     this.props.freelancers.forEach(function(freelancer, index) {
@@ -122,9 +126,48 @@ var RateBarChart = React.createClass({
       chartData.datasets[0].data[rateGroup]++
     });
 
-
-    return <BarChart data={chartData} options={chartOptions} width="700" height="250"/>
+    return <BarChart data={chartData} options={chartOptions} width="700" height="300"/>
   }
 });
+
+
+
+var MonthlyBarChart = React.createClass({
+  render: function() {
+
+    var chartData = {
+      labels: ["0 - 1,000", "1,000 - 2,000", "2,000 - 3,000", "3,000 - 4,000", "4,000 - 5,000", "5,000 - 6,000", "6,000 - 7,000", "7,000 - 8,000", "8,000 - 9,000"],
+      datasets: [
+        {
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
+      ]
+    };
+
+    var chartOptions = {
+      scaleShowGridLines: false,
+      responsive: true,
+      barValueSpacing : 10,
+      showTooltips: false
+    };
+
+    this.props.freelancers.forEach(function(freelancer, index) {
+      var rateGroup = Math.floor(freelancer.monthly / 1000);
+      chartData.datasets[0].data[rateGroup]++
+    });
+
+    return <BarChart data={chartData} options={chartOptions} width="700" height="300"/>
+  }
+});
+
+// Chart.Scale.prototype.buildYLabels = function () {
+//   this.yLabelWidth = 0;
+// };
 
 ReactDOM.render(<App/>, document.getElementById('app'));
