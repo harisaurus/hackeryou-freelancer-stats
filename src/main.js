@@ -48,8 +48,8 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Freelancer Stats</h1>
-        <DataTable freelancers={this.state.freelancers}/>
+        {/*<h1>Freelancer Stats</h1>*/}
+        {/*<DataTable freelancers={this.state.freelancers}/>*/}
 
         <form onSubmit={this.handleSubmit}>
           <h2>DataForm</h2>
@@ -60,8 +60,19 @@ var App = React.createClass({
           <input type="submit" name="submit" id="submit"/>
         </form>
 
-        <RateBarChart freelancers={this.state.freelancers}/>
-        <MonthlyBarChart freelancers={this.state.freelancers}/>
+        <div className="chartWrapper">
+          <div className="chartWrapper__title">Hourly Rates</div>
+          <div className="chartWrapper__chart">
+            <RateBarChart freelancers={this.state.freelancers}/>
+          </div>
+        </div>
+
+        <div className="chartWrapper">
+          <div className="chartWrapper__title">Average Monthly Revenue</div>
+          <div className="chartWrapper__chart">
+            <MonthlyBarChart freelancers={this.state.freelancers}/>
+          </div>
+        </div>
 
       </div>
     )
@@ -100,15 +111,15 @@ var RateBarChart = React.createClass({
   render: function() {
 
     var chartData = {
-      labels: ["0 - 19", "20 - 39", "40 - 59", "60 - 79", "80 - 99", "100 - 119", "120 - 139", "140 - 160"],
+      labels: ["$0-19", "$20-39", "$40-59", "$60-79", "$80-99", "$100-119", "$120-139", "$140-160"],
       datasets: [
         {
-          fillColor: "rgba(151,187,205,0.2)",
-          strokeColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
+          fillColor: "#3964FE",
+          strokeColor: "rgba(0,0,0,0)",
+          pointColor: "rgba(0,0,0,0)",
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
+          pointHighlightStroke: "rgba(0,0,0,0)",
           data: [0, 0, 0, 0, 0, 0, 0, 0]
         }
       ]
@@ -136,15 +147,15 @@ var MonthlyBarChart = React.createClass({
   render: function() {
 
     var chartData = {
-      labels: ["0 - 1,000", "1,000 - 2,000", "2,000 - 3,000", "3,000 - 4,000", "4,000 - 5,000", "5,000 - 6,000", "6,000 - 7,000", "7,000 - 8,000", "8,000 - 9,000"],
+      labels: ["$0-1,000", "$1,000-2,000", "$2,000-3,000", "$3,000-4,000", "$4,000-5,000", "$5,000-6,000", "$6,000-7,000", "$7,000-8,000", "$8,000-9,000"],
       datasets: [
         {
-          fillColor: "rgba(151,187,205,0.2)",
-          strokeColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
+          fillColor: "#3964FE",
+          strokeColor: "rgba(0,0,0,0)",
+          pointColor: "rgba(0,0,0,0)",
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
+          pointHighlightStroke: "rgba(0,0,0,0)",
           data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         }
       ]
