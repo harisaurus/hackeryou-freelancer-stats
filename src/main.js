@@ -12,7 +12,8 @@ var App = React.createClass({
     return {
       freelancers: [],
       rate: 0,
-      monthly: 0
+      monthly: 0,
+      role: 'full'
     };
   },
 
@@ -25,16 +26,22 @@ var App = React.createClass({
     e.preventDefault();
     if (this.state.rate > 0 && this.state.monthly > 0) {
       this.firebaseRefs['freelancers'].push({
+        role: this.state.role,
         rate: this.state.rate,
         monthly: this.state.monthly
       });
       this.setState({
         rate: 0,
-        monthly: 0
+        monthly: 0,
+        role: ''
       });
     } else {
-      console.error("Zero is not a valid entry! Sorry, homes.");
+      console.error("Not a valid entry! Sorry, homes.");
     }
+  },
+
+  onRoleChange: function(e) {
+    this.setState({role: e.currentTarget.value});
   },
 
   onRateChange: function(e) {
@@ -48,15 +55,21 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
-        {/*<h1>Freelancer Stats</h1>*/}
-        {/*<DataTable freelancers={this.state.freelancers}/>*/}
+        <h1>Freelancer Stats</h1>
+        <DataTable freelancers={this.state.freelancers}/>
 
         <form onSubmit={this.handleSubmit}>
           <h2>DataForm</h2>
+          <label htmlFor="role">Role</label>
+          <input type="radio" name="role" id="role" value="full" onChange={this.onRoleChange} checked={this.state.role === "full"} />Full-time
+          <input type="radio" name="role" id="role" value="part" onChange={this.onRoleChange} checked={this.state.role === "part"}/>Part-time
+
           <label htmlFor="rate">Rate</label>
           <input name="rate" id="rate" onChange={this.onRateChange}/>
+
           <label htmlFor="monthly">Monthly</label>
           <input name="monthly" id="monthly" onChange={this.onMonthlyChange}/>
+
           <input type="submit" name="submit" id="submit"/>
         </form>
 
@@ -85,6 +98,7 @@ var DataTable = React.createClass({
       return (
         <DataRow
           key={index}
+          role={freelancer.role}
           rate={freelancer.rate}
           monthly={freelancer.monthly}/>
       )
@@ -102,7 +116,7 @@ var DataTable = React.createClass({
 var DataRow = React.createClass({
   render() {
     return (
-      <p>{this.props.rate} - {this.props.monthly}</p>
+      <p>{this.props.role} - {this.props.rate} - {this.props.monthly}</p>
     )
   }
 })
